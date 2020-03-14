@@ -1,0 +1,43 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - db-data:/var/lib/mongodb/data
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: corona
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    volumes:
+      - 'redis_data:/var/redis/data'
+
+  # flask_app:
+  #   build: .
+  #   ports:
+  #     - "5000:5000"
+  #   environment:
+  #     - REDIS_HOST=redis
+  #     # - DB_HOST=mongo
+  #     - MAIL_USER=preventiecovid19@gmail.com
+  #     - MAIL_PASSWORD=Corona19
+  #   depends_on:
+  #     - redis
+  #     # - mongo
+
+volumes:
+  db-data:
+  redis_data:
